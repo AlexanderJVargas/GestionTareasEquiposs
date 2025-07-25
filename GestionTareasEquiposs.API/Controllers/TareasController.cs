@@ -4,8 +4,6 @@ using Microsoft.Data.SqlClient;
 using GestionTareasEquipos.Modelos;
 using Dapper;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace GestionTareasEquiposs.API.Controllers
 {
     [Route("api/[controller]")]
@@ -13,15 +11,13 @@ namespace GestionTareasEquiposs.API.Controllers
     public class TareasController : ControllerBase
     {
         private readonly DbConnection connection;
-        
+
         public TareasController(IConfiguration config)
         {
             var connectionString = config.GetConnectionString("DefaultConnection");
             connection = new SqlConnection(connectionString);
-            connection.Open();
-
-
         }
+
         // GET: api/<TareasController>
         [HttpGet]
         public IEnumerable<Tareas> Get()
@@ -32,18 +28,17 @@ namespace GestionTareasEquiposs.API.Controllers
 
         // GET api/<TareasController>/5
         [HttpGet("{id}")]
-        public Tareas Get(String id)
+        public Tareas Get(int id)
         {
             var tarea = connection.QuerySingle<Tareas>("SELECT * FROM Tareas WHERE Id = @Id", new { Id = id });
             return tarea;
-
         }
 
         // POST api/<TareasController>
         [HttpPost]
         public Tareas Post([FromBody] Tareas tareas)
         {
-            connection.Execute("INSERT INTO Tareas (Nombre, Descripcion, FechaCreacion, FechaLimite, Completada, Prioridad, Estado UsuarioId, ProyectoId) " +
+            connection.Execute("INSERT INTO Tareas (Nombre, Descripcion, FechaCreacion, FechaLimite, Completada, Prioridad, Estado, UsuarioId, ProyectoId) " +
                 "VALUES (@Nombre, @Descripcion, @FechaCreacion, @FechaLimite, @Completada, @Prioridad, @Estado, @UsuarioId, @ProyectoId)",
                 new
                 {
@@ -53,12 +48,11 @@ namespace GestionTareasEquiposs.API.Controllers
                     FechaLimite = tareas.FechaLimite,
                     Completada = tareas.Completada,
                     Prioridad = tareas.Prioridad,
-                    estado = tareas.Estado,
+                    Estado = tareas.Estado,
                     UsuarioId = tareas.UsuarioId,
                     ProyectoId = tareas.ProyectoId
                 });
             return tareas;
-
         }
 
         // PUT api/<TareasController>/5
@@ -81,7 +75,6 @@ namespace GestionTareasEquiposs.API.Controllers
                     ProyectoId = tareas.ProyectoId
                 });
             return tareas;
-
         }
 
         // DELETE api/<TareasController>/5
@@ -116,6 +109,14 @@ namespace GestionTareasEquiposs.API.Controllers
         {
             var query = "SELECT * FROM Tareas WHERE UsuarioId = @UsuarioId";
             return connection.Query<Tareas>(query, new { UsuarioId = usuarioId }).ToList();
+        }
+
+        // GET api/Tareas/proyecto/5
+        [HttpGet("proyecto/{proyectoId}")]
+        public IEnumerable<Tareas> GetTareasByProyecto(int proyectoId)
+        {
+            var query = "SELECT * FROM Tareas WHERE ProyectoId = @ProyectoId";
+            return connection.Query<Tareas>(query, new { ProyectoId = proyectoId }).ToList();
         }
     }
 }

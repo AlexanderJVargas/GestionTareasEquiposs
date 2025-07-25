@@ -93,32 +93,32 @@ namespace GestionTareasEquipos.MVC.LS.Controllers
             }
         }
 
+        
         public ActionResult Reportes(string estado, string prioridad)
         {
             var todasTareas = Crud<Tareas>.GetAll();
 
-            
             if (!string.IsNullOrEmpty(estado))
             {
                 todasTareas = todasTareas.Where(t => t.Estado == estado).ToList();
             }
 
-            
             if (!string.IsNullOrEmpty(prioridad))
             {
                 todasTareas = todasTareas.Where(t => t.Prioridad == prioridad).ToList();
             }
-                
-            
+
+            // Ordenar por fecha límite
             todasTareas = todasTareas.OrderBy(t => t.FechaLimite).ToList();
 
-            ViewBag.Estados = new SelectList(new[] { "Pendiente", "En Progreso", "Completada" });
+            ViewBag.Estados = new SelectList(new[] { "Pendiente", "En Progreso", "Completada", "Cancelada" });
             ViewBag.Prioridades = new SelectList(new[] { "Alta", "Media", "Baja" });
             ViewBag.EstadoSeleccionado = estado;
             ViewBag.PrioridadSeleccionada = prioridad;
 
             return View(todasTareas);
         }
+
         public ActionResult Busqueda(int? proyectoId, int? usuarioId)
         {
             var todasTareas = Crud<Tareas>.GetAll();
@@ -149,14 +149,14 @@ namespace GestionTareasEquipos.MVC.LS.Controllers
 
                 ViewBag.Proyectos = new SelectList(proyectos, "Id", "Nombre");
                 ViewBag.Usuarios = new SelectList(usuarios, "Id", "Nombre");
-                ViewBag.Estados = new SelectList(new[] { "Pendiente", "En Progreso", "Completada" });
+                ViewBag.Estados = new SelectList(new[] { "Pendiente", "En Progreso", "Completada", "Cancelada" });
                 ViewBag.Prioridades = new SelectList(new[] { "Alta", "Media", "Baja" });
             }
             catch (Exception)
             {
                 ViewBag.Proyectos = new SelectList(new List<Proyecto>(), "Id", "Nombre");
                 ViewBag.Usuarios = new SelectList(new List<Usuario>(), "Id", "Nombre");
-                ViewBag.Estados = new SelectList(new[] { "Pendiente", "En Progreso", "Completada" });
+                ViewBag.Estados = new SelectList(new[] { "Pendiente", "En Progreso", "Completada", "Cancelada" });
                 ViewBag.Prioridades = new SelectList(new[] { "Alta", "Media", "Baja" });
             }
         }

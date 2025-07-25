@@ -18,6 +18,14 @@ namespace GestionTareasEquipos.MVC.LS.Controllers
         public ActionResult Details(int id)
         {
             var data = Crud<Proyecto>.GetById(id);
+            
+
+            var todasTareas = Crud<Tareas>.GetAll();
+            var tareasDelProyecto = todasTareas.Where(t => t.ProyectoId == id).ToList();
+
+            // Pasar las tareas a la vista usando ViewBag
+            ViewBag.TareasDelProyecto = tareasDelProyecto;
+
             return View(data);
         }
 
