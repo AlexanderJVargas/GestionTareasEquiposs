@@ -1,0 +1,59 @@
+﻿@model IEnumerable<GestionTareasEquipos.Modelos.Tareas>
+
+@{
+    ViewData["Title"] = "Reportes de Tareas";
+}
+
+<h1>Reporte de Tareas</h1>
+
+<form method="get">
+    <table>
+        <tr>
+            <td><label for="estado">Filtrar por Estado:</label></td>
+            <td>
+                <select name="estado" id="estado">
+                    <option value="">Todos los estados</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En Progreso">En Progreso</option>
+                    <option value="Completada">Completada</option>
+                    <option value="Cancelada">Cancelada</option>
+                </select>
+
+                    
+            </td>
+        </tr>
+        
+    </table>
+</form>
+
+<h3>Resultados (@Model.Count() tareas encontradas)</h3>
+
+<table border="1" cellpadding="5" cellspacing="0" style="width:100%">
+    <thead>
+        <tr style="background-color:#f0f0f0">
+            <th>Nombre</th>
+            <th>Estado</th>
+            <th>Prioridad</th>
+            <th>Fecha Límite</th>
+            <th>Proyecto ID</th>
+            <th>Usuario ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Estado</td>
+                <td>@item.Prioridad</td>
+                <td>@item.FechaLimite.ToString("dd/MM/yyyy")</td>
+                <td>@item.ProyectoId</td>
+                <td>@item.UsuarioId</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    <a href="@Url.Action("Index")">Volver a la lista principal</a>
+</p>

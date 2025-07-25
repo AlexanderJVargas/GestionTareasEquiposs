@@ -15,11 +15,11 @@ namespace GestionTareasEquipos.Modelos
 
         // Claves Foraneas
         public int UsuarioId { get; set; }
-        public int TareaId { get; set; }
+        
         // Navegacion
         public Usuario? Usuario { get; set; }
 
         // Relaciones
-        public List<Tareas> Tareas { get; set; }
+        
     }
 }

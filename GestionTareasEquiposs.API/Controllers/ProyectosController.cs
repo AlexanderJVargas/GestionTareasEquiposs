@@ -43,17 +43,16 @@ namespace GestionTareasEquiposs.API.Controllers
         [HttpPost]
         public Proyecto Post([FromBody] Proyecto proyecto)
         {
-            connection.Execute("INSERT INTO Proyectos (Nombre, Descripcion, FechaCreacion, FechaLimite, esCompletado, UsuarioId, TareaId) " +
-                "VALUES (@Nombre, @Descripcion, @FechaCreacion, @FechaLimite, @esCompletado, @UsuarioId, @TareaId)",
+            connection.Execute("INSERT INTO Proyectos (Nombre, Descripcion, FechaCreacion, FechaLimite, esCompletado, UsuarioId) " +
+                "VALUES (@Nombre, @Descripcion, @FechaCreacion, @FechaLimite, @esCompletado, @UsuarioId)",
                 new
                 {
-                    id = proyecto.Nombre,
-                    nombres = proyecto.Descripcion,
-                    fechasCreacion = proyecto.FechaCreacion,
-                    fechaFin =proyecto.FechaLimite,
-                    estado = proyecto.esCompletado,
-                    usuarios = proyecto.UsuarioId,
-                    tareas = proyecto.TareaId
+                    Nombre = proyecto.Nombre,
+                    Descripcion = proyecto.Descripcion,
+                    FechaCreacion = proyecto.FechaCreacion,
+                    FechaLimite = proyecto.FechaLimite,
+                    esCompletado = proyecto.esCompletado,
+                    UsuarioId = proyecto.UsuarioId
                 });
             return proyecto;
         }
@@ -63,7 +62,7 @@ namespace GestionTareasEquiposs.API.Controllers
         public Proyecto Put(int id, [FromBody] Proyecto proyecto)
         {
             connection.Execute("UPDATE Proyectos SET Nombre = @Nombre, Descripcion = @Descripcion, FechaCreacion = @FechaCreacion, " +
-                "FechaLimite = @FechaLimite, esCompletado = @esCompletado, UsuarioId = @UsuarioId, TareaId = @TareaId WHERE Id = @Id",
+                "FechaLimite = @FechaLimite, esCompletado = @esCompletado, UsuarioId = @UsuarioId WHERE Id = @Id",
                 new
                 {
                     Id = id,
@@ -73,7 +72,7 @@ namespace GestionTareasEquiposs.API.Controllers
                     FechaLimite = proyecto.FechaLimite,
                     esCompletado = proyecto.esCompletado,
                     UsuarioId = proyecto.UsuarioId,
-                    TareaId = proyecto.TareaId
+                    
                 });
             return proyecto;
 

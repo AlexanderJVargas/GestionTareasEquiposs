@@ -43,8 +43,8 @@ namespace GestionTareasEquiposs.API.Controllers
         [HttpPost]
         public Tareas Post([FromBody] Tareas tareas)
         {
-            connection.Execute("INSERT INTO Tareas (Nombre, Descripcion, FechaCreacion, FechaLimite, Completada, UsuarioId, ProyectoId) " +
-                "VALUES (@Nombre, @Descripcion, @FechaCreacion, @FechaLimite, @Completada, @UsuarioId, @ProyectoId)",
+            connection.Execute("INSERT INTO Tareas (Nombre, Descripcion, FechaCreacion, FechaLimite, Completada, Prioridad, Estado UsuarioId, ProyectoId) " +
+                "VALUES (@Nombre, @Descripcion, @FechaCreacion, @FechaLimite, @Completada, @Prioridad, @Estado, @UsuarioId, @ProyectoId)",
                 new
                 {
                     Nombre = tareas.Nombre,
@@ -52,6 +52,8 @@ namespace GestionTareasEquiposs.API.Controllers
                     FechaCreacion = tareas.FechaCreacion,
                     FechaLimite = tareas.FechaLimite,
                     Completada = tareas.Completada,
+                    Prioridad = tareas.Prioridad,
+                    estado = tareas.Estado,
                     UsuarioId = tareas.UsuarioId,
                     ProyectoId = tareas.ProyectoId
                 });
@@ -64,7 +66,7 @@ namespace GestionTareasEquiposs.API.Controllers
         public Tareas Put(int id, [FromBody] Tareas tareas)
         {
             connection.Execute("UPDATE Tareas SET Nombre = @Nombre, Descripcion = @Descripcion, FechaCreacion = @FechaCreacion, " +
-                "FechaLimite = @FechaLimite, Completada = @Completada, UsuarioId = @UsuarioId, ProyectoId = @ProyectoId WHERE Id = @Id",
+                "FechaLimite = @FechaLimite, Completada = @Completada, Prioridad = @Prioridad, Estado = @Estado, UsuarioId = @UsuarioId, ProyectoId = @ProyectoId WHERE Id = @Id",
                 new
                 {
                     Id = id,
@@ -73,6 +75,8 @@ namespace GestionTareasEquiposs.API.Controllers
                     FechaCreacion = tareas.FechaCreacion,
                     FechaLimite = tareas.FechaLimite,
                     Completada = tareas.Completada,
+                    Prioridad = tareas.Prioridad,
+                    Estado = tareas.Estado,
                     UsuarioId = tareas.UsuarioId,
                     ProyectoId = tareas.ProyectoId
                 });
@@ -85,6 +89,33 @@ namespace GestionTareasEquiposs.API.Controllers
         public void Delete(int id)
         {
             connection.Execute("DELETE FROM Tareas WHERE Id = @Id", new { Id = id });
+        }
+
+        [HttpGet("filtrar")]
+        public IEnumerable<Tareas> GetTareasFiltradas([FromQuery] string? nombre = null, [FromQuery] string? estado = null, [FromQuery] string? prioridad = null)
+        {
+            var query = "SELECT * FROM Tareas WHERE 1=1";
+            if (!string.IsNullOrEmpty(nombre))
+            {
+                query += " AND Nombre LIKE @Nombre";
+            }
+            if (!string.IsNullOrEmpty(estado))
+            {
+                query += " AND Estado = @Estado";
+            }
+            if (!string.IsNullOrEmpty(prioridad))
+            {
+                query += " AND Prioridad = @Prioridad";
+            }
+            return connection.Query<Tareas>(query, new { Nombre = $"%{nombre}%", Estado = estado, Prioridad = prioridad }).ToList();
+        }
+
+        // GET api/Tareas/usuario/5
+        [HttpGet("usuario/{usuarioId}")]
+        public IEnumerable<Tareas> GetTareasByUsuario(int usuarioId)
+        {
+            var query = "SELECT * FROM Tareas WHERE UsuarioId = @UsuarioId";
+            return connection.Query<Tareas>(query, new { UsuarioId = usuarioId }).ToList();
         }
     }
 }

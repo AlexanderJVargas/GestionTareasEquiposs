@@ -1,0 +1,69 @@
+﻿@model IEnumerable<GestionTareasEquipos.Modelos.Tareas>
+
+@{
+    ViewData["Title"] = "Búsqueda de Tareas";
+}
+
+<h1>Búsqueda Avanzada de Tareas</h1>
+
+<form method="get">
+    <table>
+        <tr>
+            <td><label for="proyectoId">Buscar por Proyecto:</label></td>
+            <td>
+                <select name="proyectoId" id="proyectoId">
+                    <option value="">Todos los proyectos</option>
+          
+ 
+                </select>
+            </td>
+        </tr>
+        
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Buscar" />
+                <a href="@Url.Action("Busqueda")">Limpiar búsqueda</a>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<h3>Resultados (@Model.Count() tareas encontradas)</h3>
+
+<table border="1" cellpadding="5" cellspacing="0" style="width:100%">
+    <thead>
+        <tr style="background-color:#f0f0f0">
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Prioridad</th>
+            <th>Fecha Límite</th>
+            <th>Proyecto ID</th>
+            <th>Usuario ID</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Descripcion</td>
+                <td>@item.Estado</td>
+                <td>@item.Prioridad</td>
+                <td>@item.FechaLimite.ToString("dd/MM/yyyy")</td>
+                <td>@item.ProyectoId</td>
+                <td>@item.UsuarioId</td>
+                <td>
+                    <a href="@Url.Action("Details", new { id = item.Id })">Ver</a> |
+                    <a href="@Url.Action("Edit", new { id = item.Id })">Editar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    <a href="@Url.Action("Index")">Volver a la lista principal</a>
+</p>

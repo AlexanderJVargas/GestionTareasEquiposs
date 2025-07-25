@@ -41,13 +41,15 @@ namespace GestionTareasEquiposs.API.Controllers
         [HttpPost]
         public Usuario Post([FromBody] Usuario usuario)
         {
-            connection.Execute("INSERT INTO Usuarios (Nombre, Apellido, Email, FechaCreacion) " +
-                "VALUES (@Nombre, @Apellido, @Email, @FechaCreacion)",
+            connection.Execute("INSERT INTO Usuarios (Nombre, Email, Password, FechaCreacion) " +
+                "VALUES (@Nombre, @Email, @Password, @FechaCreacion)",
                 new
                 {
                     Nombre = usuario.Nombre,
                     Email = usuario.Email,
                     Password = usuario.Password,
+                    FechaCreacion = DateTime.Now
+
 
 
                 });

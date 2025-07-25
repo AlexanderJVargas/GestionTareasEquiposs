@@ -9,7 +9,7 @@ namespace GestionTareasEquipos.MVC.LS
         {
             Crud<Proyecto>.EndPoint = "https://localhost:7233/api/Proyectos";
             Crud<Tareas>.EndPoint = "https://localhost:7233/api/Tareas";
-            Crud<Usuario>.EndPoint = "https://localhost:7233/api/Usuarios";
+            Crud<Usuario>.EndPoint = "https://localhost:7233/api/Usuario";
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
