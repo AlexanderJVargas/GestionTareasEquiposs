@@ -19,7 +19,8 @@ namespace GestionTareasEquiposs.API.Models
         public int TareaId { get; set; }
         // Navegacion
         public Usuario? Usuario { get; set; }
-        public Tareas? Tarea { get; set; }
+
         // Relaciones
+        public List<Tareas> Tareas { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Data.Common;
-using System.Data.SqlClient;
-using GestionTareasEquiposs.API.Models;
+using Microsoft.Data.SqlClient;
+using GestionTareasEquipos.Modelos;
 using Dapper;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -43,8 +43,8 @@ namespace GestionTareasEquiposs.API.Controllers
         [HttpPost]
         public Tareas Post([FromBody] Tareas tareas)
         {
-            connection.Execute("INSERT INTO Tareas (Nombre, Descripcion, FechaCreacion, FechaLimite, Completada, UsuarioId) " +
-                "VALUES (@Nombre, @Descripcion, @FechaCreacion, @FechaLimite, @Completada, @UsuarioId)",
+            connection.Execute("INSERT INTO Tareas (Nombre, Descripcion, FechaCreacion, FechaLimite, Completada, UsuarioId, ProyectoId) " +
+                "VALUES (@Nombre, @Descripcion, @FechaCreacion, @FechaLimite, @Completada, @UsuarioId, @ProyectoId)",
                 new
                 {
                     Nombre = tareas.Nombre,
@@ -52,7 +52,8 @@ namespace GestionTareasEquiposs.API.Controllers
                     FechaCreacion = tareas.FechaCreacion,
                     FechaLimite = tareas.FechaLimite,
                     Completada = tareas.Completada,
-                    UsuarioId = tareas.UsuarioId
+                    UsuarioId = tareas.UsuarioId,
+                    ProyectoId = tareas.ProyectoId
                 });
             return tareas;
 
@@ -63,7 +64,7 @@ namespace GestionTareasEquiposs.API.Controllers
         public Tareas Put(int id, [FromBody] Tareas tareas)
         {
             connection.Execute("UPDATE Tareas SET Nombre = @Nombre, Descripcion = @Descripcion, FechaCreacion = @FechaCreacion, " +
-                "FechaLimite = @FechaLimite, Completada = @Completada, UsuarioId = @UsuarioId WHERE Id = @Id",
+                "FechaLimite = @FechaLimite, Completada = @Completada, UsuarioId = @UsuarioId, ProyectoId = @ProyectoId WHERE Id = @Id",
                 new
                 {
                     Id = id,
@@ -72,7 +73,8 @@ namespace GestionTareasEquiposs.API.Controllers
                     FechaCreacion = tareas.FechaCreacion,
                     FechaLimite = tareas.FechaLimite,
                     Completada = tareas.Completada,
-                    UsuarioId = tareas.UsuarioId
+                    UsuarioId = tareas.UsuarioId,
+                    ProyectoId = tareas.ProyectoId
                 });
             return tareas;
 

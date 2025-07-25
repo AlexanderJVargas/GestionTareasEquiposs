@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Dapper;
 using System.Data.Common;
-using System.Data.SqlClient;
-using GestionTareasEquiposs.API.Models;
+using Microsoft.Data.SqlClient;
+using GestionTareasEquipos.Modelos;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,26 +33,48 @@ namespace GestionTareasEquiposs.API.Controllers
         [HttpGet("{id}")]
         public Usuario Get(String id)
         {
-            var usuario = connection.QuerySingleOrDefault<Usuario>("SELECT * FROM Usuarios WHERE Id = @Id", new { Id = id });
+            var usuario = connection.QuerySingle<Usuario>("SELECT * FROM Usuarios WHERE Id = @Id", new { Id = id });
             return usuario;
         }
 
         // POST api/<UsuarioController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public Usuario Post([FromBody] Usuario usuario)
         {
+            connection.Execute("INSERT INTO Usuarios (Nombre, Apellido, Email, FechaCreacion) " +
+                "VALUES (@Nombre, @Apellido, @Email, @FechaCreacion)",
+                new
+                {
+                    Nombre = usuario.Nombre,
+                    Email = usuario.Email,
+                    Password = usuario.Password,
+
+
+                });
+            return usuario;
+
         }
 
         // PUT api/<UsuarioController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public Usuario Put(int id, [FromBody] Usuario usuario)
         {
+            connection.Execute("UPDATE Usuarios SET Nombre = @Nombre, Email = @Email, Password = @Password WHERE Id = @Id",
+                new
+                {
+                    Id = id,
+                    Nombre = usuario.Nombre,
+                    Email = usuario.Email,
+                    Password = usuario.Password
+                });
+            return usuario;
         }
 
         // DELETE api/<UsuarioController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            connection.Execute("DELETE FROM Usuarios WHERE Id = @Id", new { Id = id });
         }
     }
 }

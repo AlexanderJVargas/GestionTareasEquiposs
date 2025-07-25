@@ -1,8 +1,8 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.Common;
-using System.Data.SqlClient;
-using GestionTareasEquiposs.API.Models;
+using Microsoft.Data.SqlClient;
+using GestionTareasEquipos.Modelos;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,14 +18,14 @@ namespace GestionTareasEquiposs.API.Controllers
         public ProyectosController(IConfiguration config)
         {
             var connectionString = config.GetConnectionString("DefaultConnection");
-            connection = new MySqlConnector.MySqlConnection(connectionString);
+            connection = new SqlConnection(connectionString);
 
         }
         // GET: api/<ProyectosController>
         [HttpGet]
-        public IEnumerable<Models.Proyecto> Get()
+        public IEnumerable<Proyecto> Get()
         {
-            var proyectos = connection.Query<Models.Proyecto>("SELECT * FROM Proyectos").ToList();
+            var proyectos = connection.Query<Proyecto>("SELECT * FROM Proyectos").ToList();
             return proyectos;
 
 
@@ -35,7 +35,7 @@ namespace GestionTareasEquiposs.API.Controllers
         [HttpGet("{id}")]
         public Proyecto Get(int id)
         {
-            var proyecto = connection.QuerySingleOrDefault<Models.Proyecto>("SELECT * FROM Proyectos WHERE Id = @Id", new { Id = id });
+            var proyecto = connection.QuerySingleOrDefault<Proyecto>("SELECT * FROM Proyectos WHERE Id = @Id", new { Id = id });
             return proyecto;
         }
 
